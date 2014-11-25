@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FunPad v.1.0.0</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="action_quit">Zamknij</string>
+    <string name="reminder">Podaj nick</string>
+    <string name="name_button">Start!</string>
+    <string name="name_server">Podaj adres serwera</string>
+    <string name="name_port">Port</string>
+    <string name="test"/>
+
+</resources>

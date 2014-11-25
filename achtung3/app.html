@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Przestroga krzywej</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+	<div id="area"></div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+	<script src="http://documentcloud.github.com/backbone/backbone.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <script type="text/javascript">
+
+var width = $(window).width();
+var height = $(window).height();
+var r;
+var bonus = 4;
+var maxAngle = 20;
+var missiles = [];
+var missilesViews = []
+var players = [];
+
+
+
+var addPlayer = function(model, view){
+  players.push({model:model, view:view});
+}
+  function isset_player(nick){
+    for(var i=0; i<players.length; i++){
+      if(players[i].model.get('username') == nick){
+        return players[i];
+      }
+    }
+    return false;
+  }
+
+  function odswiez(){
+          
+          $.post( "http://192.168.43.108:1337",json, function( data ) {
+            var dat = JSON.parse(data);
+            for(var i=0; i<dat.length; i++){
+              var pl = isset_player(dat[i].userName)
+              if(pl){
+                  pl.model.set({turnValue :  dat[i].turnValue});
+              }
+              else{
+                try{
+                dat[i].a = new Player({
+                        //id:1,
+                        username: dat[i].userName,
+                        pos_x: Math.floor(Math.random()*(width-300)+150)+1,
+                        pos_y: Math.floor(Math.random()*(height-300)+150)+1,
+                        angle: 0
+                        })
+                dat[i].b = new PlayerView({
+                        model: dat[i].a
+                    })
+                addPlayer(dat[i].a, dat[i].b
+                    )
+              }
+              catch(e){
+                //   console.log(e);
+              }
+            }
+
+
+      for(i=0; i<players.length; i++){
+            if(gameOver.indexOf(players[i].model.get_username())<0){
+
+        $('div#area').append(players[i].view.render().el);
+      }
+      }
+            }
+          //   playerOdbierz.dane = JSON.parse(data);
+          // playerOdbierz.angle = playerOdbierz.dane.turnValue;
+          // playerOdbierz.username = playerOdbierz.dane.userName;
+          odswiez();
+          });
+  }
+
+
+      var json = {
+        type: 'dataRequest',
+
+      };
+       
+      json = JSON.stringify(json);
+      odswiez();
+      // setInterval(
+      //   function()
+      //   {
+      //     $.post( "http://192.168.43.108:1337",json, function( data ) {
+      //     try{playerOdbierz.dane = JSON.parse(data);
+      //     playerOdbierz.angle = playerOdbierz['dane'][0]['typeurnValue'];
+      //     playerOdbierz.username = playerOdbierz['dane'][0]['userName'];
+      //     }
+      //     catch(err){
+      //       playerOdbierz.angle = 0;
+      //     }
+      //     });
+      //   },200);
+
+      
+  </script>
+
+<script src="models.js"></script>
+<script src="views.js"></script>
+<script src="script.js"></script>
+
+<svg width="100" height="100" style="position:fixed;top:50;left:40;z-index:2;">
+   
+</svg> 
+
+</body>
+</html>
